@@ -17,6 +17,12 @@
         android:text="Play"
         android:id="@+id/play_button" />
 
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,4 +34,5 @@
         android:layout_height="wrap_content"
         android:text="Kill this song"
         android:id="@+id/destroy_button" />
+
 </LinearLayout>

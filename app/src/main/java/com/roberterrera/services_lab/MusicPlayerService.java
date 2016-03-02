@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -14,8 +15,6 @@ import android.widget.Toast;
 public class MusicPlayerService extends Service {
 
     final MediaPlayer player = new MediaPlayer();
-    String url = "http://download.lisztonian.com/music/download/Clair+de+Lune-113.mp3";
-
 
     @Nullable
     @Override
@@ -25,15 +24,12 @@ public class MusicPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!player.isPlaying()){
-                    playMusic(url);
-                } else {
-                    pauseMusic(url);
-                }
-            }
+        Log.d("ON_START_COMMAND", "Starting up player...");
+        if (!player.isPlaying()) {
+            onPlay();
+            Log.d("ON_START_COMMAND", "Player is going to play");
+        } else {
+            onPause();
         };
         return super.onStartCommand(intent, flags, startId);
     }
@@ -41,19 +37,23 @@ public class MusicPlayerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(MusicPlayerService.this, "Service created.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MusicPlayerService.this, "Services rendered.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(MusicPlayerService.this, "You killed the music!!", Toast.LENGTH_SHORT).show();
+        if (player != null){
+            player.release();
+            Toast.makeText(MusicPlayerService.this, "Music is dead", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     // Methods
-    public void playMusic(String url){
+    public void onPlay(){
         try {
+            String url = "http://download.lisztonian.com/music/download/Clair+de+Lune-113.mp3";
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(url);
             player.prepareAsync();
@@ -65,14 +65,16 @@ public class MusicPlayerService extends Service {
             });
         } catch (Throwable thr){
         }
+
+        Toast.makeText(MusicPlayerService.this, "Music should be playing.", Toast.LENGTH_SHORT).show();
     }
 
-    public void pauseMusic(String url){
+    public void onPause(){
         try {
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    player.stop();
+                    player.pause();
                 }
             });
         } catch (Throwable thr){
