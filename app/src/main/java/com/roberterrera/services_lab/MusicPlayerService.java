@@ -29,8 +29,16 @@ public class MusicPlayerService extends Service {
             onPlay();
             Log.d("ON_START_COMMAND", "Player is going to play");
         } else {
-            onPause();
-        };
+//            try {
+//                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+                        player.pause();
+//                    }
+//                });
+//            } catch (Throwable thr) {
+//            }
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -69,16 +77,16 @@ public class MusicPlayerService extends Service {
         Toast.makeText(MusicPlayerService.this, "Music should be playing.", Toast.LENGTH_SHORT).show();
     }
 
-    public void onPause(){
-        try {
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    player.pause();
-                }
-            });
-        } catch (Throwable thr){
-        }
-    }
+//    public void onPause(){
+//        try {
+//            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                @Override
+//                public void onPrepared(MediaPlayer mp) {
+//                    player.pause();
+//                }
+//            });
+//        } catch (Throwable thr){
+//        }
+//    }
 
 }

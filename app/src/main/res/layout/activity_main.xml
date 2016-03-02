@@ -11,10 +11,10 @@
     android:orientation="vertical"
     tools:context="com.roberterrera.services_lab.MainActivity">
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
+        android:src="@android:drawable/ic_media_play"
         android:id="@+id/play_button" />
 
     <ProgressBar
@@ -22,12 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
-        android:id="@+id/pause_button" />
 
     <Button
         android:layout_width="wrap_content"
