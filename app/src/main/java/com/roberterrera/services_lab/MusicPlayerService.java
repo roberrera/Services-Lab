@@ -28,7 +28,11 @@ public class MusicPlayerService extends Service {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                playMusic(url);
+                if (!player.isPlaying()){
+                    playMusic(url);
+                } else {
+                    pauseMusic(url);
+                }
             }
         };
         return super.onStartCommand(intent, flags, startId);
@@ -43,12 +47,7 @@ public class MusicPlayerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                pauseMusic(url);
-            }
-        };
+        Toast.makeText(MusicPlayerService.this, "You killed the music!!", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent destroyIntent = new Intent(MainActivity.this, MusicPlayerService.class);
-                startService(destroyIntent);
+                stopService(destroyIntent);
             }
         });
     }
