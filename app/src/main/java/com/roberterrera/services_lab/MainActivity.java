@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     Button mDestroyButton;
     ImageButton mPlayButton;
+    boolean mPlay = true;
     public ProgressBar progressBar;
 
     @Override
@@ -35,7 +36,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Toast.makeText(MainActivity.this, "Play button pressed", Toast.LENGTH_SHORT).show();
                 Intent playIntent = new Intent(MainActivity.this, MusicPlayerService.class);
-                startService(playIntent);
+                if (mPlay = true) {
+                    playIntent.setAction("PLAY");
+                    startService(playIntent);
+                    mPlay = false;
+                } else {
+                    playIntent.setAction("PAUSE");
+                    startService(playIntent);
+                    mPlay = true;
+                }
             }
         });
 

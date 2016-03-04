@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class MusicPlayerService extends Service {
 
     static MediaPlayer player = new MediaPlayer();
+    boolean isPrepared = false;
 
     @Nullable
     @Override
@@ -23,16 +24,18 @@ public class MusicPlayerService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (!player.isPlaying()) {
-                    onPlay();
-                    Log.d("ON_START_COMMAND", "Player is playing");
-                } else {
-                    onPause();
-                    Log.d("ON_START_COMMAND", "Player is paused.");
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equals("PLAY")) {
+                        onPlay();
+                        Log.d("ON_START_COMMAND", "Player is playing");
+                    } else {
+                        onPause();
+                        Log.d("ON_START_COMMAND", "Player is paused.");
+                    }
                 }
             }
         };
@@ -67,7 +70,7 @@ public class MusicPlayerService extends Service {
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    player.start();
+                    isPrepared = true; player.start();
                 }
             });
         } catch (Throwable thr){
