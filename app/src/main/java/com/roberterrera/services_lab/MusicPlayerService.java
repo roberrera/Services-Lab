@@ -14,7 +14,7 @@ import android.widget.Toast;
  */
 public class MusicPlayerService extends Service {
 
-    final MediaPlayer player = new MediaPlayer();
+    static MediaPlayer player = new MediaPlayer();
 
     @Nullable
     @Override
@@ -24,28 +24,27 @@ public class MusicPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("ON_START_COMMAND", "Starting up player...");
-        if (!player.isPlaying()) {
-            onPlay();
-            Log.d("ON_START_COMMAND", "Player is going to play");
-        } else {
-//            try {
-//                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                    @Override
-//                    public void onPrepared(MediaPlayer mp) {
-                        player.pause();
-//                    }
-//                });
-//            } catch (Throwable thr) {
-//            }
-        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!player.isPlaying()) {
+                    onPlay();
+                    Log.d("ON_START_COMMAND", "Player is playing");
+                } else {
+                    onPause();
+                    Log.d("ON_START_COMMAND", "Player is paused.");
+                }
+            }
+        };
+        new Thread(runnable).start();
+
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(MusicPlayerService.this, "Services rendered.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MusicPlayerService.this, "Service rendered (er... created).", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -74,19 +73,10 @@ public class MusicPlayerService extends Service {
         } catch (Throwable thr){
         }
 
-        Toast.makeText(MusicPlayerService.this, "Music should be playing.", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MusicPlayerService.this, "Music should be playing.", Toast.LENGTH_SHORT).show();
     }
 
-//    public void onPause(){
-//        try {
-//            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    player.pause();
-//                }
-//            });
-//        } catch (Throwable thr){
-//        }
-//    }
-
+    public void onPause() {
+        player.pause();
+    }
 }
